@@ -19,7 +19,7 @@ from dotenv import load_dotenv
 load_dotenv(override=True)
 
 # 2. Define the Model
-MODEL = "deepseek/deepseek-r1:free"
+MODEL = "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"
 
 # 3. Dynamic Root Detection
 try:

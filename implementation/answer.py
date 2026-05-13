@@ -54,7 +54,7 @@ try:
 except NameError:
     # Works in Notebooks
     base_path = Path.cwd()
-MODEL = "deepseek/deepseek-r1:free"
+MODEL = "nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free"
 
 DB_NAME = str(base_path / "vector_db")
 
@@ -78,7 +78,7 @@ retriever = vectorstore.as_retriever()
 
 # We use the standard ChatOpenAI but change the base_url
 llm = ChatOpenAI(
-    model_name="deepseek/deepseek-r1:free",
+    model_name="nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
     openai_api_key=os.getenv("OPENROUTER_API_KEY"),
     openai_api_base="https://openrouter.ai/api/v1",
     temperature=0

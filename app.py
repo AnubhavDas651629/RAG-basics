@@ -8,7 +8,6 @@ import gradio as gr
 from dotenv import load_dotenv
 
 from implementation.answer import DB_NAME, answer_question, message_content_to_str, normalize_message_dict
-
 load_dotenv(override=True)
 
 # This helper function is designed to take the "raw" data found by your retriever and 
