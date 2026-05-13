@@ -7,7 +7,7 @@
 import gradio as gr
 from dotenv import load_dotenv
 
-from implementation.answer import DB_NAME, answer_question
+from implementation.answer import DB_NAME, answer_question, message_content_to_str, normalize_message_dict
 
 load_dotenv(override=True)
 
@@ -28,12 +28,15 @@ def format_context(context):
 # Takes the last user message as question and the previous ones as history.
 # Calls answer_question(last_message, prior) from implementation.answer.
 # Appends the answer to history and returns:
-# -Updated chat history (for display in the chatbot).
-# -Formatted HTML of the retrieved context for a side panel.
+# Updated chat history (for display in the chatbot).
+# Formatted HTML of the retrieved context for a side panel.
 
 def chat(history):
-    last_message = history[-1]["content"]
-    prior = history[:-1]
+    last = history[-1]
+    last_message = message_content_to_str(last.get("content") if isinstance(last, dict) else last)
+    prior = [
+        normalize_message_dict(dict(m)) if isinstance(m, dict) else m for m in history[:-1]
+    ]
     answer, context = answer_question(last_message, prior)
     history.append({"role": "assistant", "content": answer})
     return history, format_context(context)
@@ -45,17 +48,19 @@ def main():
 
     theme = gr.themes.Soft(font=["Inter", "system-ui", "sans-serif"])
 
-    with gr.Blocks(title="Insurellm Expert Assistant", theme=theme) as ui:
-        gr.Markdown("# 🏢 Insurellm Expert Assistant\nAsk me anything about Insurellm!")
+    with gr.Blocks(title="ACCENTURE Expert Assistant") as ui:
+        gr.Markdown("# 🏢 ACCENTURE Expert Assistant\nAsk me anything about Insurellm!")
 
         with gr.Row():
             with gr.Column(scale=1):
                 chatbot = gr.Chatbot(
-                    label="💬 Conversation", height=600, type="messages", show_copy_button=True
+                    label="💬 Conversation",
+                    height=600,
+                    buttons=["copy"],
                 )
                 message = gr.Textbox(
                     label="Your Question",
-                    placeholder="Ask anything about Insurellm...",
+                    placeholder="Ask anything about ACCENTURE...",
                     show_label=False,
                 )
 
@@ -71,7 +76,7 @@ def main():
             put_message_in_chatbot, inputs=[message, chatbot], outputs=[message, chatbot]
         ).then(chat, inputs=chatbot, outputs=[chatbot, context_markdown])
 
-    ui.launch(inbrowser=True)
+    ui.launch(inbrowser=True, theme=theme)
 
 
 if __name__ == "__main__":

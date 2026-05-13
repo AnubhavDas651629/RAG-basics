@@ -5,8 +5,10 @@ langchain-chroma
 langchain-huggingface
 langchain-community
 langchain-text-splitters
-sklearn
+scikit-learn
 plotly
 python-dotenv
 tiktoken
 gradio
+langchain-openrouter
+sentence-transformers
